@@ -1,6 +1,19 @@
 # 2017_PnP_ProvisioningDemo
 ## 2017 PnP Provisioning Demo for Silicon Valley Code Camp and SharePoint Saturday Sacramento
-
+### Presentation
+1. Busines Use Case
+  * Replicate site collection and subsite deployments according to a use-case specific template.
+  * Co-branded client sites.
+2. Relavent Technologies
+  * PnP Provisioning Engine - console application or PowerShell.
+  * XML templating engine (can be directly customized)
+  * SPFx workbench for web part development
+3. Overview of XML Templates
+  * [Seeding Your Template - Initial Site](https://youtube.sharepointsolver.videoaboutthis.com)
+  * Sample Templates:
+    ** [Legal Portal](https://github.com/sqlsolver/2017_PnP_ProvisioningDemo/xyzcodelink)
+    ** [Finance Portal](https://github.com/sqlsolver/2017_PnP_ProvisioningDemo/xyzcodelink)
+    ** [Healthcare Portal](https://github.com/sqlsolver/2017_PnP_ProvisioningDemo/xyzcodelink)
 
 
 
