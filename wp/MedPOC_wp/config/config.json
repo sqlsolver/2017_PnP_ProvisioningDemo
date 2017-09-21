@@ -1,0 +1,18 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "view-doc-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/viewDoc/ViewDocWebPart.js",
+          "manifest": "./src/webparts/viewDoc/ViewDocWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ViewDocWebPartStrings": "lib/webparts/viewDoc/loc/{locale}.js"
+  }
+}

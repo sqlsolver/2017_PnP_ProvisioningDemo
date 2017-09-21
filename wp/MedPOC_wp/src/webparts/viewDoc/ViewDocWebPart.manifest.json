@@ -1,0 +1,26 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "2824f29b-4027-49ce-8a39-c64f21eb0c92",
+  "alias": "ViewDocWebPart",
+  "componentType": "WebPart",
+
+  // The "*" signifies that the version should be taken from the package.json
+  "version": "0.0.1",
+  "manifestVersion": 2,
+
+  // If true, the component can only be installed on sites where Custom Script is allowed.
+  // Components that allow authors to embed arbitrary script code should set this to true.
+  // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
+  "requiresCustomScript": false,
+
+  "preconfiguredEntries": [{
+    "groupId": "dc8a04f5-63f0-454d-9590-e045a1276bd1",
+    "group": { "default": "Content rollup" },
+    "title": { "default": "ViewDoc" },
+    "description": { "default": "View Physician Profile" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "ViewDoc"
+    }
+  }]
+}

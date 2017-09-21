@@ -1,0 +1,12 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "med-poc-wp-client-side-solution",
+    "id": "df394976-cfe2-4e01-8f68-3729129b45d3",
+    "version": "1.0.0.0",
+    "skipFeatureDeployment": true
+  },
+  "paths": {
+    "zippedPackage": "solution/med-poc-wp.sppkg"
+  }
+}
