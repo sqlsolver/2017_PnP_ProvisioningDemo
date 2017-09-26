@@ -18,9 +18,11 @@
     "group": { "default": "Content rollup" },
     "title": { "default": "ViewDoc" },
     "description": { "default": "View Physician Profile" },
+    "iconImageUrl": "/sites/cdn/Med%20POC%20Assets/Forms/Thumbnails.aspx?RootFolder=%2Fsites%2Fcdn%2FMed%20POC%20Assets%2FProviders&FolderCTID=0x012000C9C9488B587D9848A9632933859A493C&View=%7B27FE3AA7%2D1511%2D4872%2D81FF%2D8CAA9370E860%7D#",
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ViewDoc"
+      "description": "ViewDoc",
+      "listName": ""
     }
   }]
 }

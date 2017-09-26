@@ -1,7 +1,7 @@
 define([], function() {
   return {
-    "PropertyPaneDescription": "Profile Selector",
-    "DataGroupName": "Physician Profiles",
+    "PropertyPaneDescription": "Description",
+    "BasicGroupName": "Group Name",
     "ListFieldLabel": "List",
     "ItemFieldLabel": "Item"
   }

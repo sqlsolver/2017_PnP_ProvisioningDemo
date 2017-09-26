@@ -1,4 +1,4 @@
-.viewDoc {
+.dropdownWithRemoteDataWithoutCustomControls {
   .container {
     max-width: 700px;
     margin: 0px auto;
@@ -47,17 +47,6 @@
       margin: 0 4px;
       vertical-align: top;
       display: inline-block;
-    }
-
-      &.disabled, &:disabled {
-      background-color: #f4f4f4;
-      border-color: #f4f4f4;
-      cursor: default;
-      pointer-events: none;
-
-      .label {
-        color: #a6a6a6;
-      }
     }
   }
 }

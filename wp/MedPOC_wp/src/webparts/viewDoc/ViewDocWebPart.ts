@@ -5,23 +5,25 @@ import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneCheckbox,
-  PropertyPaneDropdown,
-  PropertyPaneToggle
+  PropertyPaneDropdown
 } from '@microsoft/sp-webpart-base';
-
 import * as strings from 'ViewDocWebPartStrings';
-import ViewDoc from './components/ViewDoc';
-import { IViewDocProps } from './components/IViewDocProps';
+import ListItems from './components/ListItems';
+import { IListItemsProps  } from './components/IListItemsProps ';
 import { IViewDocWebPartProps } from './IViewDocWebPartProps';
+import { PropertyPaneAsyncDropdown } from './PropertyPaneAsyncDropdown';
+import { IDropdownOption } from 'office-ui-fabric-react/lib/components/Dropdown';
+import { update, get } from '@microsoft/sp-lodash-subset';
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
 export default class ViewDocWebPart extends BaseClientSideWebPart<IViewDocWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IViewDocProps > = React.createElement(
-      ViewDoc,
-      {
-        description: this.properties.description
+    const element: React.ReactElement<IListItemsProps> = React.createElement(ListItems, {
+       // spHttpClient: this.context.spHttpClient,
+       // siteUrl: this.context.pageContext.web.absoluteUrl,
+        listName: this.properties.listName,
+        item: this.properties.item
       }
     );
 
@@ -30,6 +32,30 @@ export default class ViewDocWebPart extends BaseClientSideWebPart<IViewDocWebPar
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
+  }
+  
+  //Replace this one with REST for actual list
+  private loadLists(): Promise<IDropdownOption[]> {
+    return new Promise<IDropdownOption[]>((resolve: (options: IDropdownOption[]) => void, reject: (error: any) => void) => {
+      setTimeout(() => {
+        resolve([{
+          key: 'sharedDocuments',
+          text: 'Shared Documents'
+        },
+          {
+            key: 'myDocuments',
+            text: 'My Documents'
+          }]);
+      }, 2000);
+    });
+  }
+  
+  private onListChange(propertyPath: string, newValue: any): void {
+    const oldValue: any = get(this.properties, propertyPath);
+    // store new value in web part properties
+    update(this.properties, propertyPath, (): any => { return newValue; });
+    // refresh web part
+    this.render();
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -41,10 +67,13 @@ export default class ViewDocWebPart extends BaseClientSideWebPart<IViewDocWebPar
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.DataGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                new PropertyPaneAsyncDropdown('listName', {
+                  label: strings.ListFieldLabel,
+                  loadOptions: this.loadLists.bind(this),
+                  onPropertyChange: this.onListChange.bind(this),
+                  selectedKey: this.properties.listName
                 })
               ]
             }
