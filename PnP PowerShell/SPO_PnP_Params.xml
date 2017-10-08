@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Config>
+	<Tenant>https://sharepointsolver-admin.sharepoint.com</Tenant>
+	<BaseUrl>https://sharepointsolver.sharepoint.com</BaseUrl>
+	<SourceSite
+		SiteCollUrl="https://sharepointsolver.sharepoint.com/sites/medsrc/"
+	/>
+	<SourceWeb
+		WebUrl="https://sharepointsolver.sharepoint.com/sites/medsrc/medwebsrc"
+	/>
+	<MenuTitle>PnP Function Chooser</MenuTitle>
+	<OutputFile>./medsrc.pnp</OutputFile>
+	<WebOutputFile>./medsrcweb.pnp</WebOutputFile>
+	<Sites>
+		<Site
+			Title="medtrgt"
+			Url="/sites/medtrgt"
+			Owner="sqlsolver@sharepointsolver.onmicrosoft.com"
+			TimeZone="13"
+		/>
+	</Sites>
+	<Webs>
+		<Web
+			Title="Medsrc Subweb 1"
+			Url="medsrc1"
+			Description="Test and delete."
+			Locale="1033"
+			Template="STS#0"
+		/>
+		<Web
+			Title="Medsrc Subweb 2"
+			Url="medsrc2"
+			Description="Test and delete."
+			Locale="1033"
+			Template="STS#0"
+		/>
+		<Web
+			Title="Medsrc Subweb 3"
+			Url="medsrc3"
+			Description="Test and delete."
+			Locale="1033"
+			Template="STS#0"
+		/>
+		<Web
+			Title="Medsrc Subweb 4"
+			Url="medsrc4"
+			Description="Test and delete."
+			Locale="1033"
+			Template="STS#0"
+		/>
+	</Webs>
+</Config>
