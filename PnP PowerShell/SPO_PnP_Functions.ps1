@@ -57,8 +57,8 @@ function pullSiteCollectionTemplate () {
 			Write-Output `n "The error is: " $_.Exception.Message
 		}
 		finally {
-			menuActions
 		} 
+		menuActions
 }
 
 #Get a web template
@@ -73,8 +73,8 @@ function pullWebTemplate () {
 		Write-Output `n "The error is: " $_.Exception.Message
 	}
 	finally {
-	menuActions
 	} 
+	menuActions
 }
 
 #Create a new classic Site Collection
@@ -92,8 +92,8 @@ Connect-PnPOnline -Url $webParams.Config.Tenant
 			Write-Output `n "The error is: " $_.Exception.Message
 		}
 	finally {
-	menuActions
 	}
+	menuActions
 }
 
 #Create a new subweb
@@ -118,8 +118,8 @@ function newSubWeb () {
 		Write-Output `n "The error is: " $_.Exception.Message
     }
     finally {
-		menuActions
     }
+	menuActions
 }
 
 function applySiteCollTemplate () {
@@ -137,18 +137,17 @@ try {
 		Write-Output `n "The error is: " $_.Exception.Message
     }
     finally {
-		menuActions
     }
+	menuActions
 }
 
 function applyWebTemplate () {
 	$trgtWeb = $webParams.Config.Webs.Web.Url #Needs a read-host to collect parent
 try {
 	$trgtWeb | ForEach-Object {
-	Connect-PnPOnline -Url $trgtWeb  
-	Set-PnPTenantSite -Url $trgtWeb -NoScriptSite:$false
-	Apply-PnPProvisioningTemplate -Path $webParams.Config.WebOutputFile -Web $trgtWeb
-	
+		Connect-PnPOnline -Url $trgtWeb  
+		Set-PnPTenantSite -Url $trgtWeb -NoScriptSite:$false
+		Apply-PnPProvisioningTemplate -Path $webParams.Config.WebOutputFile -Web $trgtWeb	
 	    }
 	}
 	catch {
@@ -156,13 +155,11 @@ try {
 		Write-Output `n "The error is: " $_.Exception.Message
     }
     finally {
-		menuActions
     }
+	menuActions
 }
 
 #Console menu
-
-
 function menuActions () {
 	do {
 		while ($selection -eq $null) {
