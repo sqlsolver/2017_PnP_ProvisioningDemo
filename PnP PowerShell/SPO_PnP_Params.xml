@@ -13,8 +13,8 @@
 	<WebOutputFile>./medsrcweb.pnp</WebOutputFile>
 	<Sites>
 		<Site
-			Title="medtrgt"
-			Url="/sites/medtrgt"
+			Title="medtrgt2"
+			Url="/sites/medtrgt2"
 			Owner="sqlsolver@sharepointsolver.onmicrosoft.com"
 			TimeZone="13"
 		/>
