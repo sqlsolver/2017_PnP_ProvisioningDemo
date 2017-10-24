@@ -1,0 +1,2 @@
+###PnP PowerShell Sample for the Provisioning Demo
+>Only one demo script is provided. Multiple functions exisit in a single script and their purpose is noted in the script comments. You can load the script into memory (see this [example for AutoSPInstaller](http://spinsiders.com/brianlala/2014/04/30/autospinstaller-for-specific-config-changes/)) and then run the functions one at a time, or run specific tasks from the menu.
