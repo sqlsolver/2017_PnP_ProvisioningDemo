@@ -1,6 +1,9 @@
+
 <# 
 .SYNOPSIS
 Uses SPO and PnP PowerShell functions to create and provision sites and subsites in SharePoint Online.
+To run all available functions tenant admin privileges are required. 
+As of 12/17/2017 this script relies on the October Release 1 version of the PnP cmdlets.
 
 .DESCRIPTION
 Various functions related to provisiong including: enable and create public and private CDN on O365, 
@@ -12,6 +15,7 @@ You willl supply the path to the parameters file at the prompt.
 
 .EXAMPLE
 From the PowerShell prompt run .\SPO_PnP_Functions.ps1 You will be prompted for the path to your .xml paraameters file.
+When creating site or web template files, a date stamp is added so that you will be able to select a version of the file if needed.
 
 .NOTES
 17-09-25 Assembled by Ramona Maxwell www.SolverInc.com/contact - Microsoft Public License (Ms-PL) USE AT YOUR OWN RISK, 
@@ -37,20 +41,26 @@ you assume all liability for your use of any code herein.
 	$dateStamp = Get-Date -Format "yyyy-MM-dd-hhmm"
 	$transcript = ".\" + $dateStamp + "_" + $MyInvocation.MyCommand.Name.Replace(".ps1", "") + ".log"
 	$outputFile = ".\" + $dateStamp + "_" + $MyInvocation.MyCommand.Name.Replace(".ps1", "") + "_run.doc"
+	$siteTemplateFile = ".\" + $dateStamp + "_" + ($webParams.Config.SourceSite.SiteCollUrl -Replace'\b.*sites\b|\W|\bcom\b','') + "_siteCollTemplate.pnp"
+	$webTemplateFile = ".\" + $dateStamp + "_" + ($webParams.Config.SourceWeb.WebUrl -Replace'\b.*sites\b|\W|\bcom\b','') + "_webTemplate.pnp"
 	Start-Transcript -Path $transcript
 	Set-PnPTraceLog -On -Level:Debug -LogFile $outputFile
 
-#Connect to your SPO tenant so that you can use current credentials for individual functions
-	Connect-SPOService -url $webParams.Config.Tenant
+#Connect to your SPO tenant. If are connected using Connect-SPOService PnP functions will not be available until without this.
+	Connect-PnPOnline -url $webParams.Config.Tenant -credentials (Get-Credential)
 
-#Get the site collection template
+
+#Get a site collection template
 function pullSiteCollectionTemplate () {
 	$srcSite = $webParams.Config.SourceSite.SiteCollUrl
-	Write-Output "Attempting to download template package from " $srcSite
-	
+	#Write-Output "The template of " $srcSite " will be saved as: " $siteTemplateFile
+	Write-Output "Attempting to download template package from " $srcSite	
 	try {
 			Connect-PnPOnline -Url $srcSite  
-			Get-PnPProvisioningTemplate -Out $webParams.Config.OutputFile -IncludeAllTermGroups -PersistBrandingFiles
+			Get-PnPProvisioningTemplate `
+			-Out $webParams.Config.SourceSite.SiteCollOutputFile `
+			-IncludeSiteCollectionTermGroup `
+			-PersistBrandingFiles
 		}
 		catch {
 			Write-Host $_.Exception.Message -ForegroundColor:Red
@@ -64,9 +74,13 @@ function pullSiteCollectionTemplate () {
 #Get a web template
 function pullWebTemplate () {
 	$srcWeb = $webParams.Config.SourceWeb.WebUrl
+	Write-Output "The template of " $srcWeb " will be saved as: " $webTemplateFile
 	try {
 			Connect-PnPOnline -Url $srcWeb 
-			Get-PnPProvisioningTemplate -Out $webParams.Config.WebOutputFile -Web $srcWeb -PersistBrandingFiles
+			Get-PnPProvisioningTemplate `
+			-Out $webTemplateFile `
+			-Web $srcWeb `
+			-PersistBrandingFiles
 		}
 	catch {
 		Write-Host $_.Exception.Message -ForegroundColor:Red
@@ -84,18 +98,33 @@ Connect-PnPOnline -Url $webParams.Config.Tenant
 	try {
 		$Sites = $webParams.Config.Sites.Site
 		$Sites | ForEach-Object {
-			New-PnPTenantSite -Title $_.Title -Url $_.Url -Owner $_.Owner -TimeZone $_.TimeZone
+			New-PnPTenantSite `
+			-RemoveDeletedSite `
+			-Template $_.Template `
+			-Title $_.Title `
+			-Description $_.Description `
+			-Url ($_.BaseUrl + $_.Url)`
+			-Owner $_.Owner `
+			-TimeZone $_.TimeZone
+
+			Start-Sleep -Seconds 30
+			$validatedSite = Get-SPOSite -Identity ($_.BaseUrl + $_.Url) `
+			If ($validatedSite) {				
+				Write-Host "The site collection $validatedSite has been created!" -ForegroundColor:Yellow
+				Write-Host $validatedSite.RootWeb.SiteGroups -ForegroundColor:DarkBlue
+				$u1 = $validatedSite.RootWeb.EnsureUser($_.Owner)
+				$validatedSite.RootWeb.CreateDefaultAssociatedGroups($u1, $u2, $_.Name)
+				$validatedSite.RootWeb.Update();
+			}
 		}
 	}
 	catch {
 			Write-Host $_.Exception.Message -ForegroundColor:Red
 			Write-Output `n "The error is: " $_.Exception.Message
 		}
-	finally {
-	}
-	menuActions
+#removed finally block - see if script exits to menu after process
+#Function did not complete with menuActions placed here...
 }
-
 #Create a new subweb
 function newSubWeb () {
 #Get XML params for new web(s).
@@ -122,6 +151,7 @@ function newSubWeb () {
 	menuActions
 }
 
+#Apply a site collection template
 function applySiteCollTemplate () {
 #Connect to Target Site and apply template
 try {
@@ -141,6 +171,7 @@ try {
 	menuActions
 }
 
+#Apply a subsite template
 function applyWebTemplate () {
 	$trgtWeb = $webParams.Config.Webs.Web.Url #Needs a read-host to collect parent
 try {

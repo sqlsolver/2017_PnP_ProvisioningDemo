@@ -1,0 +1,21 @@
+<provision>
+	<login tenant="" />
+	<cdns>
+		<cdn>
+			<type></type>
+			<libraryUrl></libraryUrl>
+		</cdn>
+		<cdn>
+			<type></type>
+			<libraryUrl></libraryUrl>
+		</cdn>
+		<cdn>
+			<type></type>
+			<libraryUrl></libraryUrl>
+		</cdn>
+		<cdn>
+			<type></type>
+			<libraryUrl></libraryUrl>
+		</cdn>
+	</cdns>
+</provision>
